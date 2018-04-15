@@ -51,16 +51,19 @@ export default class App extends Component {
   render() {
     return (
       <div className="container-fluid container-top-gap-fix background-image">
+
         <nav className="navbar">
           <div className="navbar-header">
             <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
-              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" /> CU Reviews</span>
+              <span><img src='logo.svg' width="40" height="40" className="d-inline-block align-top" id='logoImg' alt="" />CU Reviews</span>
             </a>
           </div>
           <ul className="nav navbar-nav nav-right nopadding clearBackground">
             <li className='reportButton'><a id='report-bug' href="https://goo.gl/forms/twC1E0RsWlQijBrk2" target="_blank"> Report a Bug</a></li>
           </ul>
         </nav>
+
+
         <div className='container pushDown'>
           <div className="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
             <p id="welcome_text">Welcome to CU Reviews</p>
@@ -74,6 +77,8 @@ export default class App extends Component {
             <p id="second_welcome_text">Search for your courses, rate your classes, and share your feedback</p>
           </div>
         </div>
+
+
         <div className='container noPadding panel-color-translucent'>
           <div className="col-md-6 col-sm-12 col-xs-12 panel-container panel sticky">
             <PopularClasses />
@@ -84,6 +89,21 @@ export default class App extends Component {
             </div>
           </div>
         </div>
+
+
+        <footer className = "site-footer">
+        <div className="row">
+          <div className="col-md-6" id="footerText">
+            <img src='logo.svg' width="40" height="40" className="d-inline-block" id='logoImg' alt="" />
+            <span><a href="http://cornelldti.org/"> Designed by Cornell Design & Tech Initiative </a></span>
+          </div>
+          <div className="col-md-6" id="footerText2" className="useful useful-text">
+            <p>
+              Was this helpful? <a onClick={() => sendFeedback(1)} id="yes">yes</a> | <a onClick={() => sendFeedback(0)} href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a>
+            </p>
+          </div>
+        </div>
+        </footer>
       </div>
     );
   }

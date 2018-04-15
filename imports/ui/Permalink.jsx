@@ -1,7 +1,7 @@
-import React, { Component} from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, PropTypes } from 'react';
 import { Meteor } from "meteor/meteor";
 import CourseCard from './CourseCard.jsx';
+import {createContainer} from 'meteor/react-meteor-data';
 import Form from './Form.jsx';
 import SearchBar from './SearchBar.jsx';
 import CourseReviews from './CourseReviews.jsx';
@@ -10,36 +10,15 @@ import "./css/App.css";
 import {sendFeedback} from './js/Feedback.js';
 import {courseVisited} from './js/Feedback.js';
 import App from './App.jsx';
-import "./css/ClassView.css";
+import "./css/Permalink.css";
 
-
-/*
-  ClassView component.
-
-  View component accessed via the /course route. It renders course infomation for
-  the class referenced in the URL GET parameters (provided in the props).
-
-  Parses the GET variables and searches the Classes collection in the local database
-  for the corresponding class object.
-  If one is found, a CourseCard, Form and Recent Reviews are rendered for that class.
-  Otherwise, the user receives an error page. A Loading animation is rendered while
-  the app is searching for a match.
-
-  The navigation bar is visible for all 3 of the above views, so the component
-  must also support SearchBar functionality.
-*/
-
-export default class ClassView extends Component {
+// Permalink component - Component to render a CourseCard after searching for it in the database
+export default class Permalink extends Component {
     constructor (props) {
         super(props);
-
-        // grabs class number and subject from the GET parameters
         const number  = this.props.match.params.number;
         const subject = this.props.match.params.subject.toLowerCase();
 
-        // local state stores the get variables and the class object they
-        // correspond to, and flags to signal that a class was not found.
-        // Saves current user input to the searchbar as a controlled component 'query'.
         this.state = {
             number: number,
             subject: subject,
@@ -47,38 +26,33 @@ export default class ClassView extends Component {
             classDoesntExist: false,
             query: '',
         };
-
         this.updateQuery = this.updateQuery.bind(this);
     }
 
-    // TODO: Redirect the user when they click the sign-in button. This will take the user
-    // to a google login, and back to the homepage.
-    // forceLogin() {
-    //   window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
-    // }
+    //redirect to force login
+    forceLogin() {
+      window.location = "http://aqueous-river.herokuapp.com/saml/auth?persist=" + encodeURIComponent("http://localhost:3000/auth") +"&redirect=" + encodeURIComponent("http://localhost:3000/app");
+    }
 
-    // Set the state variable to the current value of the input. Called within SearchBar.jsx, so
-    // it must be bound to this component (in the constructor) so that this component's local state changes.
-    // Searchbar takes the query in this component's local state to render its search suggestions.
+    //set the state variable to the current value of the input. Called in SearchBar.jsx
+    //searchbar must receive the query to use in subscription to courses for search suggestions
     updateQuery(event) {
       this.setState({query: event.target.value});
-      //Session to be able to get info from this.state.query in withTracker
+      //Session to be able to get info from this.state.query in createContainer
       Session.set('querySession', this.state.query);
     }
 
-    // Once the component loads, the constructor will have added the GET variables to the local state.
-    // Use the get variables to search the local Classes database for a class with the
-    // requested subject and course number. Update the local state accordingly.
     componentWillMount () {
       Meteor.call("getCourseByInfo", this.state.number, this.state.subject, (err, selectedClass) => {
+          console.log("requesting", selectedClass);
           if (!err && selectedClass) {
-              // Save the Class object that matches the request
+              console.log(selectedClass);
               this.setState({
                   selectedClass: selectedClass
               });
           }
           else {
-              // No class matches the request.
+              // 404
               console.log("no");
               this.setState({
                   classDoesntExist: true
@@ -87,12 +61,13 @@ export default class ClassView extends Component {
       });
     }
 
-    // If a class was found, render a CourseCard, Form and Recent Reviews for the class.
+
+
     render () {
         if (this.state.selectedClass) {
           courseVisited(this.state.selectedClass.classSub, this.state.selectedClass.classNum);
           return (
-            <div className="container-fluid container-top-gap-fix">
+            <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
@@ -118,27 +93,15 @@ export default class ClassView extends Component {
                   </div>
                 </div>
               </div>
-
-              <footer className = "site-footer">
-              <div className="row">
-                <div className="col-md-6" id="footerText">
-                  <img src='logo.svg' width="40" height="40" className="d-inline-block" id='logoImg' alt="" />
-                  <span><a href="http://cornelldti.org/"> Designed by Cornell Design & Tech Initiative </a></span>
-                </div>
-                <div className="col-md-6" id="footerText2" className="useful useful-text">
-                  <p>
-                    Was this helpful? <a onClick={() => sendFeedback(1)} id="yes">yes</a> | <a onClick={() => sendFeedback(0)} href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a>
-                  </p>
-                </div>
-              </div>
-              </footer>
-
             </div>
           );
+            // return (
+            //     <App selectedClass={ this.state.selectedClass } />
+            // );
         } else if (this.state.classDoesntExist) {
-          // Class was not found, so show a 404 error graphic.
+          //TODO: 404 error graphic
           return (
-              <div className="container-fluid container-top-gap-fix">
+              <div className="container-fluid container-top-gap-fix remove-background">
               <nav className="navbar navbar-fixed-top">
                 <div className="navbar-header">
                   <a className="cornell-reviews title-link navbar-brand" id="navname" href="/">
@@ -151,24 +114,22 @@ export default class ClassView extends Component {
                 </ul>
               </nav>
               <div id="error">
-                <img id="errorgauge" src="/error.png" width="400px" height="auto" />
-                <h2>Sorry, we couldn't find the class you're searching for.</h2>
-                <h2>Please search for a different class.</h2>
+              <span>Sorry, we couldn't find your class.</span>
+              <h3>Try searching again.</h3>
               </div>
               </div>
 
           );
         } else {
-          // While a class is being searched for, render a loading animation.
+          //TODO: loading screen graphic
             const Loading = require('react-loading-animation');
             return (
                 <div id="loading">
                 <Loading/>;
               </div>
             )
+
+
         }
     }
 }
-
-// takes no props
-ClassView.propTypes = {};

@@ -119,6 +119,7 @@ nav {
 
 .nav-center {
   margin-top: 15px;
+  float: center !important;
   background-color: transparent !important;
 }
 
@@ -146,4 +147,52 @@ nav {
     position: sticky;
     top: 75px;
   }
+}
+
+.site-footer{
+  background-color: #4990E2;
+  height: 72px;
+  margin-top: 0px !important;
+  text-align: center;
+  padding-bottom: 0px !important;
+}
+
+#footerText{
+  color: #fff;
+  font-weight: normal;
+  padding-top: 28px !important;
+}
+
+#footerText a{
+  text-decoration: none;
+}
+
+#footerText a:hover{
+  opacity: 0.7;
+}
+
+#footerText a:visited{
+  color: #fff;
+}
+
+#footerText2{
+  color: #fff;
+  font-weight: normal;
+  padding-top: 33px !important;
+}
+
+#footerText2 a{
+  text-decoration: none;
+}
+
+#footerText2 a:hover{
+  opacity: 0.7;
+}
+
+#footerText2 a:visited{
+  color: #fff;
+}
+
+#yes{
+  color: #fff
 }
