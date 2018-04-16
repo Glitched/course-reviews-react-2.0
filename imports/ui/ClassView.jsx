@@ -121,17 +121,17 @@ export default class ClassView extends Component {
               </div>
 
               <footer className = "site-footer">
-              <div className="row">
-                <div className="col-md-6" id="footerText">
-                  <img src='logo.svg' width="40" height="40" className="d-inline-block" id='logoImg' alt="" />
-                  <span><a href="http://cornelldti.org/"> Designed by Cornell Design & Tech Initiative </a></span>
+                <div className="row">
+                  <div className="col-md-6" id="footerText">
+                    <img src='/logo.svg' width="40" height="40" className="d-inline-block" id='logoImg' alt="" />
+                    <span><a href="http://cornelldti.org/"> Designed by Cornell Design & Tech Initiative </a></span>
+                  </div>
+                  <div className="col-md-6" id="footerText2">
+                    <p>
+                      Was this site helpful? <a onClick={() => sendFeedback(1)} id="yes">yes</a> | <a onClick={() => sendFeedback(0)} href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" >no</a>
+                    </p>
+                  </div>
                 </div>
-                <div className="col-md-6" id="footerText2" className="useful useful-text">
-                  <p>
-                    Was this helpful? <a onClick={() => sendFeedback(1)} id="yes">yes</a> | <a onClick={() => sendFeedback(0)} href = "https://goo.gl/forms/q93rYWY7567vLnAQ2" target="_blank" id="no">no</a>
-                  </p>
-                </div>
-              </div>
               </footer>
 
             </div>
