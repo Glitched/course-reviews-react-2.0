@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Reviews } from '../api/dbDefs.js';
 import './css/Form.css';
 import { Bert } from 'meteor/themeteorchef:bert'; // alert library, https://themeteorchef.com/tutorials/client-side-alerts-with-bert
+import { Button } from 'semantic-ui-react';
 
 /*
   Form Component.
@@ -251,7 +252,7 @@ export default class Form extends Component {
                       <h2 className="secondary-text">All posts are completely anonymous to ensure constructive, honest feedback. You must have previously been enrolled in this class to give feedback.</h2>
                   </div>
                   <div className="col-md-3">
-                      <button  disabled={!isEnabled} id = "postbutton" onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</button>
+                      <Button disabled={!isEnabled} onClick={() => {this.setState({postClicks: this.state.postClicks +1});}}>Post</Button>
                   </div>
               </div>
               <div className="row">
